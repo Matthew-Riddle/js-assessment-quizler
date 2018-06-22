@@ -1,0 +1,20 @@
+[
+    {
+        "type": "list",
+        "name": "question-1",
+        "message": "who is datboi?",
+        "choices": [
+            "datboi is me",
+            "datboi is will"
+        ]
+    },
+    {
+        "type": "list",
+        "name": "question-2",
+        "message": "who is disboi?",
+        "choices": [
+            "disboi is aarth",
+            "disboi is everyone"
+        ]
+    }
+]

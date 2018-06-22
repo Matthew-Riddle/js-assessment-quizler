@@ -1,0 +1,20 @@
+[
+    {
+        "type": "list",
+        "name": "question-1",
+        "message": "How dare you?",
+        "choices": [
+            "uh...what?",
+            "I dare therefore i am."
+        ]
+    },
+    {
+        "type": "list",
+        "name": "question-2",
+        "message": "What gives you the right?",
+        "choices": [
+            "God",
+            "Your momma, shut up."
+        ]
+    }
+]

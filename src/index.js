@@ -34,25 +34,34 @@ const askForQuestions = [
 
 const createQuiz = title =>
   prompt(askForQuestions)
-    .then(answer =>
-      // TODO finish createQuiz logic
-      console.log(answer)
-    )
+    .then(answer => prompt(createPrompt(answer)))
+    .then(answer => createQuestions(answer))
+    .then(answer => writeFile(title + '.json', answer))
     .catch(err => console.log('Error creating the quiz.', err))
 
-// const takeQuiz = (title, output) =>
-// TODO implement takeQuiz
+const takeQuiz = (title, output) =>
+  readFile(title + '.json')
+    .then(answer => prompt(answer))
+    .then(answer => writeFile(output + '.json', answer))
+    .catch(err => console.log('Error taking the quiz.', err))
 
-// const takeRandomQuiz = (quizes, output, n) =>
-// TODO implement takeRandomQuiz
-
+const takeRandomQuiz = (output, n, quizes) => {
+  Promise.all(quizes.map(val => readFile(val + '.json'))) // answer.reduce(flat, toflatten => flat.concat(toFlatten), [])
+    // .then(answer => answer.flat())
+    .then(answer =>
+      answer.reduce((flat, toFlatten) => flat.concat(toFlatten), [])
+    )
+    .then(answer => prompt(chooseRandom(answer, n)))
+    .then(answer => writeFile(`${output}.json`, answer))
+    .catch(err => console.log('Error with random quiz.', err))
+}
 cli
   .command(
     'create <fileName>',
     'Creates a new quiz and saves it to the given fileName'
   )
   .action(function (input, callback) {
-    // TODO update create command for correct functionality
+    // TODO update create command for correct functionality2
     return createQuiz(input.fileName)
   })
 
@@ -63,17 +72,19 @@ cli
   )
   .action(function (input, callback) {
     // TODO implement functionality for taking a quiz
+    return takeQuiz(input.fileName, input.outputFile)
   })
 
 cli
   .command(
-    'random <outputFile> <fileNames...>',
+    'random <outputFile> <n> <fileNames...>',
     'Loads a quiz or' +
       ' multiple quizes and selects a random number of questions from each quiz.' +
       ' Then, saves the users answers to the given outputFile'
   )
   .action(function (input, callback) {
     // TODO implement the functionality for taking a random quiz
+    return takeRandomQuiz(input.outputFile, input.n, input.fileNames)
   })
 
 cli.delimiter(cli.chalk['yellow']('quizler>')).show()
